@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit&family=Montserrat&family=Open+Sans:wght@300&family=Plaster&family=Poppins&display=swap");
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+
+.fs-outfit {
+    font-family: "Outfit";
+}
+
+.fs-montserrat {
+    font-family: "Montserrat";
+}
+
+.fs-poppins {
+    font-family: "Poppins";
+}
+
+.login {
+    background-image: url("../../public/img/blckhoodie.jpg");
+    background-size: cover;
+    position: relative;
+}
+
+.login::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: #0d524d;
+    opacity: 0.5;
+}
+
+.nav-link {
+    position: relative;
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #0d524d;
+    transition: 0.4s;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
