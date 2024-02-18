@@ -12,6 +12,7 @@
 
     <body>
         @include('components/navbar')
+        @include('components/alerts')
         <div class="w-full h-screen bg-[#deeceb] p-20 fs-poppins grid grid-cols-2 gap-6">
             <div class="w-full h-full flex justify-center items-center">
                 <div class="w-96 h-96">
@@ -19,7 +20,7 @@
                 </div>
             </div>
             <div class="w-full h-full flex items-center">
-                <div class="">
+                <div class="w-full">
                     <p class="text-3xl fs-outfit">Detail Produk</p>
                     <p class="text-base">Nama Produk: <span class="text-gray-700">{{ $product->product_name }}</span>
                     </p>
@@ -28,42 +29,59 @@
                     <p class="text-base">Stock Produk: <span class="text-gray-700">{{ $product->stock }}</span></p>
                     <p class="text-base">Harga: <span class="text-gray-700">{{ $product->harga }}</span>
                     </p>
-                    <button type="button"
-                        class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 mt-2 duration-100">Beli
-                        Sekarang</button>
+                    <div class="w-full">
+                        <button type="button"
+                            class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 mt-2 duration-100">Beli
+                            Sekarang</button>
+                        @if (auth()->user()->roles === 'admin')
+                            <form action="/product/{{ $product->id }}/editproduct" method="get" class="inline">
+                                @csrf
+                                <button type="submit"
+                                    class="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 mt-2 duration-100">Edit
+                                    Produk</button>
+                            </form>
+                            <button type="button"
+                                class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 mt-2 duration-100">Beli
+                                Sekarang</button>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
         <div class="w-full fs-poppins p-20 flex flex-col" id="comments">
             <p class="text-3xl fs-outfit">Komentar ({{ $totalComments }})</p>
-            <form action="/{{ $product->id }}/comment" method="post" id="commentForm">
-                @csrf
-                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                <div class="flex flex-row w-full gap-4 justify-around">
-                    <div class="relative z- my-4 grow">
-                        <input type="text" id="text"
-                            class="block w-full px-0 py-2 text-base bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                            placeholder=" " name="comment" required />
-                        <label for="text"
-                            class="absolute text-base duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Tulis
-                            sesuatu...</label>
+            @if (auth()->user()->roles === 'admin' || auth()->user()->roles === 'user')
+                <form action="/{{ $product->id }}/comment" method="post" id="commentForm">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                    <div class="flex flex-row w-full gap-4 justify-around">
+                        <div class="relative z- my-4 grow">
+                            <input type="text" id="text"
+                                class="block w-full px-0 py-2 text-base bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " name="comment" required />
+                            <label for="text"
+                                class="absolute text-base duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Tulis
+                                sesuatu...</label>
+                        </div>
+                        <button type="submit"
+                            class="text-white border bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-5 text-center me-2 mb-2 mt-2 duration-100">Kirim</button>
                     </div>
-                    <button type="submit"
-                        class="text-white border bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-5 text-center me-2 mb-2 mt-2 duration-100">Kirim</button>
-                </div>
-            </form>
+                </form>
+            @else
+                <p class="text-base my-4 text-gray-700 italic bold">Anda Harus Memiliki Role User untuk berkomentar.</p>
+            @endif
             @if (!isset($comments))
                 <p class="text-base">Belum ada Komentar.</p>
             @else
                 <div class="flex flex-col gap-4 w-full">
                     @foreach ($comments as $comment)
                         <div class="flex flex-row gap-6">
-                            <div class="w-11 h-11">
+                            <div class="w-11 h-11 rounded-full">
                                 @if ($comment->user->user_image)
                                     <img src="{{ asset('storage/' . $comment->user->user_image) }}" alt="">
                                 @else
-                                    <img src="{{ asset('storage/userimg/defaultuser.jpg') }}" alt="">
+                                    <img src="{{ asset('storage/userimg/defaultuser.png') }}" alt="">
                                 @endif
                             </div>
                             <div>

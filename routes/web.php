@@ -30,11 +30,15 @@ Route::group(['middleware' => ['auth', 'cekroles:admin']], function() {
     ->name('crole-process');
     Route::get('/product/createproduct', [PageController::class, 'createProductForm'])->name('createProductForm');
     Route::post('/product/createproduct', [UserController::class, 'createProduct'])->name('createProductProcess');
+    Route::get('/product/{productId}/editproduct', [PageController::class, 'editProductForm'])->name('editProductForm');
+    Route::post('/product/{productId}/editproduct', [UserController::class, 'editProduct'])->name('editProduct');
 });
 Route::group(['middleware' => ['auth', 'cekroles:admin,guest,user']], function() {
     Route::get('/home', [PageController::class,'homepage'])->name('home');
     Route::get('/user', [PageController::class,'userpage'])->name('user');
-    Route::get('/{productId}/product', [PageController::class, 'showDetailProduct'])->name('showDetailProduct');
+    Route::get('/product/{productId}', [PageController::class, 'showDetailProduct'])->name('showDetailProduct');
+    Route::get('/user/profile', [PageController::class, 'profile'])->name('profile');
+    Route::post('/user/profile/{userId}', [UserController::class, 'editProfile'])->name('editProfile');
 });
 Route::group(['middleware' => ['auth', 'cekroles:admin,guest']], function() {
     Route::get('/status', [PageController::class,'statuspage'])->name('status-page');

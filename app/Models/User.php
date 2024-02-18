@@ -25,6 +25,7 @@ class User extends Authenticatable
         'email',
         'email_verified_at',
         'password',
+        'user_image',
         'roles',
         'no_telp',
         'jenis_kelamin',

@@ -15,6 +15,11 @@ class PageController extends Controller
 
         return view('home', compact('products'));
     }
+
+    public function profile() {
+        return view('user.userprofile');
+    }
+
     public function adminpage() {
         return view('admin');
     }
@@ -50,6 +55,11 @@ class PageController extends Controller
         return view('admin.createproduct');
     }
     
+    public function editProductForm(Request $request, $productId) {
+        $product = ProductModel::find($productId);
+        return view('admin.editproduct', compact('product'));
+    }
+
     public function showDetailProduct(Request $request, $productId) {
         $product = ProductModel::find($productId);
         $comments = CommentModel::where('product_id', $productId)
