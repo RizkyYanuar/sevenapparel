@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\ProductModel;
 use App\Models\CommentModel;
+use App\Models\ProductLikeModel;
+use App\Models\ReplyCommentModel;
 
 
 class PageController extends Controller
@@ -63,10 +65,14 @@ class PageController extends Controller
     public function showDetailProduct(Request $request, $productId) {
         $product = ProductModel::find($productId);
         $comments = CommentModel::where('product_id', $productId)
-        ->orderBy('created_at', 'desc') // Mengurutkan berdasarkan tanggal pembuatan (paling baru).
+        ->orderBy('created_at', 'desc')->withCount('likes') // Mengurutkan berdasarkan tanggal pembuatan (paling baru).
         ->get();
         $totalComments = $comments->count();
-        return view('product.product', compact('product', 'comments', 'totalComments'));
+        $productLikes = ProductLikeModel::where('productId', $productId)->get();
+        $total_likes = $productLikes->count();
+        $replyComment = ReplyCommentModel::where('product_id', $productId)->orderBy('created_at', 'asc')->get();
+        
+        return view('product.product', compact('product', 'comments', 'totalComments', 'productLikes', 'total_likes', 'replyComment'));
     }
 
 }

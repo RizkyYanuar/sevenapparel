@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth', 'cekroles:admin']], function() {
     Route::post('/product/createproduct', [UserController::class, 'createProduct'])->name('createProductProcess');
     Route::get('/product/{productId}/editproduct', [PageController::class, 'editProductForm'])->name('editProductForm');
     Route::post('/product/{productId}/editproduct', [UserController::class, 'editProduct'])->name('editProduct');
+    Route::post('/product/{productId}/deleteproduct', [UserController::class, 'deleteProduct'])->name('deleteproduct');
 });
 Route::group(['middleware' => ['auth', 'cekroles:admin,guest,user']], function() {
     Route::get('/home', [PageController::class,'homepage'])->name('home');
@@ -44,5 +45,10 @@ Route::group(['middleware' => ['auth', 'cekroles:admin,guest']], function() {
     Route::get('/status', [PageController::class,'statuspage'])->name('status-page');
 });
 Route::group(['middleware' => ['auth', 'cekroles:admin,user']], function() {
+    Route::post('/product/like', [UserController::class, 'productLike'])->name('productLike');
+    Route::post('/product/unlike', [UserController::class, 'productUnlike'])->name('productUnlike');
     Route::post('/{productId}/comment', [UserController::class,'comment'])->name('comment');
+    Route::post('/{commentId}/likecomment', [UserController::class,'likecomment'])->name('likecomment');
+    Route::post('/{commentId}/unlikecomment', [UserController::class,'unlikecomment'])->name('unlikecomment');
+    Route::post('/comment/reply', [UserController::class, 'replycomment'])->name('replycomment');
 });

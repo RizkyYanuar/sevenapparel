@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Models\ProductModel;
 use App\Models\CommentModel;
+use App\Models\ProductLikeModel;
+use App\Models\CommentLikeModel;
+use App\Models\ReplyCommentModel;
 
 class UserController extends Controller
 {
@@ -182,7 +185,35 @@ class UserController extends Controller
         // Redirect ke halaman setelah registrasi berhasil
         return redirect('user/profile')->with('success', 'Berhasil Mengedit Profile.');
     }
+    
+    public function deleteProduct(Request $request, $productId) {
+        $deletedProduct = ProductModel::where('id', $productId)->delete();
+        $deletedProductLike = ProductLikeModel::where('productId', $productId);
+        if($deletedProductLike) {
+            $deletedProductLike->delete();
+        }
 
+        $deletedProductComment = CommentModel::where('product_id', $productId);
+        if($deletedProductComment) {
+            $deletedProductComment->delete();
+        }
+
+        $deletedProductCommentLike = CommentLikeModel::where('product_id', $productId);
+        if($deletedProductCommentLike) {
+            $deletedProductCommentLike->delete();
+        }
+
+        $deletedReplyComment = ReplyCommentModel::where('product_id', $productId); 
+        if($deletedReplyComment) {
+            $deletedReplyComment->delete();
+        }
+        
+        if ($deletedProduct) {
+            return redirect('/home#featured-product')->with('success', 'Berhasil Menghapus Product');
+        } else {
+            return redirect()->back();
+        }
+    }
 
     public function comment(Request $request, $productId) {
         $credentials = $request->validate([
@@ -200,6 +231,68 @@ class UserController extends Controller
         }
 
         return response()->json(['success' => false]);
+    }
+
+    public function productLike(Request $request) {
+        $credentials = $request->validate([
+        'productId' => 'required',
+        'userId' => 'required',
+        ]);
+
+        if (ProductLikeModel::create($credentials)) {
+        return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false]);
+    }
+    
+    public function productUnlike(Request $request) {
+        $deleted = ProductLikeModel::where('userId', $request->userId)->delete();
+        
+        if ($deleted) {
+            return redirect('/product/'. $request->productId . '#product' . $request->productId);
+            // return response()->json(['success' => true]);
+        } else {
+            return redirect()->back();
+        }
+    }
+    
+    public function likecomment(Request $request) {
+        $credentials = $request->validate([
+            'comment_id' => 'required',
+            'user_id' => 'required',
+            'product_id' => 'required',
+        ]);
+    
+        if (CommentLikeModel::create($credentials)) {
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false]);
+    }
+
+    public function unlikecomment(Request $request) {
+        $deleted = CommentLikeModel::where('user_id', $request->user_id)->where('comment_id', $request->comment_id)->delete();
+        
+        if ($deleted) {
+         return response()->json(['success' => true]);
+        }
+    
+        return response()->json(['success' => false]);
+    }
+
+    public function replycomment(Request $request) {
+        $credentials = $request->validate([
+            'product_id' => 'required',
+            'comment_id' => 'required',
+            'user_id' => 'required',
+            'comment' => 'required',
+        ]);
+
+        if(ReplyCommentModel::create($credentials)) {
+            return redirect('/product/' . $request->product_id . '#' . $request->comment_id);
+        }
+        return redirect()->back();
     }
 
 }
