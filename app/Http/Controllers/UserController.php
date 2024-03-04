@@ -233,6 +233,26 @@ class UserController extends Controller
         return response()->json(['success' => false]);
     }
 
+    public function deletecomment(Request $request) {
+        $deletedComment = CommentModel::where('id', $request->comment_id)->delete();
+
+        $deletedCommentLike = CommentLikeModel::where('comment_id', $request->comment_id);
+        if($deletedCommentLike) {
+            $deletedCommentLike->delete();
+        }
+
+        $deletedReplyComment = ReplyCommentModel::where('comment_id', $request->comment_id);
+        if($deletedReplyComment) {
+            $deletedReplyComment->delete();
+        }
+        
+        if($deletedComment) {
+            return redirect()->back()->with('success', 'Berhasil Menghapus Komentar.');
+        }
+
+        return redirect()->back()->with('error', 'Gagal menghapus komentar.');
+    }
+
     public function productLike(Request $request) {
         $credentials = $request->validate([
         'productId' => 'required',
@@ -293,6 +313,16 @@ class UserController extends Controller
             return redirect('/product/' . $request->product_id . '#' . $request->comment_id);
         }
         return redirect()->back();
+    }
+
+    public function deletereplycomment(Request $request) {
+        $deletedReplyComment = ReplyCommentModel::where('id', $request->reply_id)->delete();
+        
+        if($deletedReplyComment) {
+            return redirect()->back()->with('success', 'Berhasil Menghapus Komentar.');
+        }
+
+        return redirect()->back()->with('error', 'Gagal menghapus komentar.');
     }
 
 }

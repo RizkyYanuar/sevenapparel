@@ -2,7 +2,7 @@
     <navbar class="">
         <div class="navbar w-full h-16 bg-[#deeceb] fs-poppins flex flex-row">
             <div class="basis-3/12 flex justify-center items-center">
-                <p class="text-2xl">Seven Apparel.</p>
+                <a class="text-2xl" href="/home">Seven Apparel.</a>
             </div>
             <div class="basis-3/6 flex justify-center items-center gap-6 text-base relative">
                 <a href="/home" class="nav-link">Home</a>

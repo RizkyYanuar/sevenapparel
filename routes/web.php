@@ -51,4 +51,6 @@ Route::group(['middleware' => ['auth', 'cekroles:admin,user']], function() {
     Route::post('/{commentId}/likecomment', [UserController::class,'likecomment'])->name('likecomment');
     Route::post('/{commentId}/unlikecomment', [UserController::class,'unlikecomment'])->name('unlikecomment');
     Route::post('/comment/reply', [UserController::class, 'replycomment'])->name('replycomment');
+    Route::post('/comment/delete', [UserController::class, 'deletecomment'])->name('deletecomment');
+    Route::post('/comment/reply/delete', [UserController::class, 'deletereplycomment'])->name('deletereplycomment');
 });
