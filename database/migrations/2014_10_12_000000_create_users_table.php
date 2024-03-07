@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('roles')->default('guest');
             $table->string('no_telp')->default('Belum Diketahui');
             $table->string('jenis_kelamin')->default('Belum Diketahui');
+            $table->text('alamat')->default('Belum Diketahui');
             $table->string('status')->default('Pending');
             $table->rememberToken();
             $table->timestamps();

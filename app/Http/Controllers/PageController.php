@@ -8,7 +8,8 @@ use App\Models\ProductModel;
 use App\Models\CommentModel;
 use App\Models\ProductLikeModel;
 use App\Models\ReplyCommentModel;
-
+use App\Models\TransactionModel;
+use App\Models\TransactionDetailModel;
 
 class PageController extends Controller
 {
@@ -19,7 +20,9 @@ class PageController extends Controller
     }
 
     public function profile() {
-        return view('user.userprofile');
+        $transactions = TransactionModel::where('user_id', auth()->user()->id)->get();
+
+        return view('user.userprofile', compact('transactions'));
     }
 
     public function adminpage() {

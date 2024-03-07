@@ -158,18 +158,21 @@ class UserController extends Controller
         'old_user_image' => 'required',
         'no_telp' => 'required',
         'jenis_kelamin' => 'required',
+        'alamat' => 'required',
         ], [
         'name.required' => 'Mohon isi nama.',
         'user_image.max' => 'Mohon masukkan ukuran gambar dibawah 1mb.',
         'old_user_image.required' => 'Gambar tidak terdaftar.',
         'no_telp.required' => 'Mohon isi nomor telepon.',
         'jenis_kelamin.required' => 'Mohon isi jenis_kelamin.',
+        'alamat.required' => 'Mohon isi alamat.',
         ]);
 
         $credentials = [
         'name' => $request->name,
         'no_telp' => $request->no_telp,
         'jenis_kelamin' => $request->jenis_kelamin,
+        'alamat' => $request->alamat,
         ];
 
         if($request->user_image) {

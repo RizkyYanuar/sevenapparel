@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\TransactionController;
 
 
 /*
@@ -48,6 +49,9 @@ Route::group(['middleware' => ['auth', 'cekroles:admin,user']], function() {
     Route::post('/product/like', [UserController::class, 'productLike'])->name('productLike');
     Route::post('/product/unlike', [UserController::class, 'productUnlike'])->name('productUnlike');
     Route::post('/{productId}/comment', [UserController::class,'comment'])->name('comment');
+    Route::get('/product/checkout/{productId}', [TransactionController::class, 'checkout'])->name('checkout');
+    Route::post('/product/checkout', [TransactionController::class, 'process'])->name('process');
+    Route::get('/product/checkout/success/{transactionId}/{productId}', [TransactionController::class, 'success'])->name('transactionSuccess');
     Route::post('/{commentId}/likecomment', [UserController::class,'likecomment'])->name('likecomment');
     Route::post('/{commentId}/unlikecomment', [UserController::class,'unlikecomment'])->name('unlikecomment');
     Route::post('/comment/reply', [UserController::class, 'replycomment'])->name('replycomment');

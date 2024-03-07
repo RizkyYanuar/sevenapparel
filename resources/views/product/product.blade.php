@@ -31,9 +31,15 @@
                 <p class="text-base text-gray-700">Harga: <span class="text-black">{{ $product->harga }}</span>
                 </p>
                 <div class="w-full">
-                    <button type="button"
-                        class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 mt-2 duration-100">Beli
-                        Sekarang</button>
+                    <form action="/product/checkout" method="post" class="inline">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                        <input type="hidden" name="harga" value="{{ $product->harga }}">
+                        <button type="submit"
+                            class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 mt-2 duration-100">Beli
+                            Sekarang</button>
+                    </form>
                     @if (auth()->user()->roles === 'admin')
                         <form action="/product/{{ $product->id }}/editproduct" method="get" class="inline">
                             @csrf
