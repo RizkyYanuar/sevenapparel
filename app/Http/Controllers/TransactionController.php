@@ -54,6 +54,13 @@ class TransactionController extends Controller
         $product = ProductModel::find($productId);
         $transactionId = $request->query('transaction_id');
         $transaction = TransactionModel::where('id', $transactionId)->pluck('snap_token');
+                $credentials = [
+            'transaction_id' => $transactionId,
+            'alamat' => auth()->user()->alamat,
+            'no_telp' => auth()->user()->no_telp,
+            'email' => auth()->user()->email,
+        ];
+        TransactionDetailsModel::create($credentials);
 
         return view('product.checkout', compact('product', 'transaction', 'transactionId'));
     }
@@ -66,13 +73,6 @@ class TransactionController extends Controller
         $transaction = TransactionModel::findOrFail($transactionId);
         $transaction->status = 'success';
         $transaction->save();
-        $credentials = [
-            'transaction_id' => $transactionId,
-            'alamat' => auth()->user()->alamat,
-            'no_telp' => auth()->user()->no_telp,
-            'email' => auth()->user()->email,
-        ];
-        TransactionDetailsModel::create($credentials);
         $transactionDetail = TransactionDetailsModel::where('transaction_id', $transactionId)->first();
         $user = User::where('id', $transaction->user_id)->first();
 

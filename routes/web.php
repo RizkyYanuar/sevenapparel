@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\KritikController;
 
 
 /*
@@ -41,6 +42,7 @@ Route::group(['middleware' => ['auth', 'cekroles:admin,guest,user']], function()
     Route::get('/product/{productId}', [PageController::class, 'showDetailProduct'])->name('showDetailProduct');
     Route::get('/user/profile', [PageController::class, 'profile'])->name('profile');
     Route::post('/user/profile/{userId}', [UserController::class, 'editProfile'])->name('editProfile');
+    Route::get('/kritikdansaran/semua',[PageController::class, 'semuakritik'])->name('semuakritik');
 });
 Route::group(['middleware' => ['auth', 'cekroles:admin,guest']], function() {
     Route::get('/status', [PageController::class,'statuspage'])->name('status-page');
@@ -57,4 +59,9 @@ Route::group(['middleware' => ['auth', 'cekroles:admin,user']], function() {
     Route::post('/comment/reply', [UserController::class, 'replycomment'])->name('replycomment');
     Route::post('/comment/delete', [UserController::class, 'deletecomment'])->name('deletecomment');
     Route::post('/comment/reply/delete', [UserController::class, 'deletereplycomment'])->name('deletereplycomment');
+    Route::get('/kritikdansaran',[PageController::class,'kritik'])->name('kritikdansaran');
+    Route::post('/kritikdansaran', [KritikController::class, 'kirimkritik'])->name('kirimkritik');
+    Route::post('/kritikdansaran/delete', [KritikController::class, 'deletekritik'])->name('deletekritik');
+    Route::post('/kritikdansaran/edit', [KritikController::class, 'editkritik'])->name('editkritik');
+
 });

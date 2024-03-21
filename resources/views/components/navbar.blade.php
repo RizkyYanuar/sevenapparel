@@ -6,8 +6,8 @@
             </div>
             <div class="basis-3/6 flex justify-center items-center gap-6 text-base relative">
                 <a href="/home" class="nav-link">Home</a>
-                <a href="/home#featured-product" class="nav-link">Product</a>
-                <a href="" class="nav-link">Categories</a>
+                <a href="/home#featured-product" class="nav-link">Produk</a>
+                <a href="/home#feedback" class="nav-link">Feedback</a>
                 <a href="/home#about" class="nav-link">About</a>
                 <a href="" class="nav-link">Get in Touch</a>
             </div>

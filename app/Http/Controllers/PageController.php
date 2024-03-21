@@ -10,13 +10,15 @@ use App\Models\ProductLikeModel;
 use App\Models\ReplyCommentModel;
 use App\Models\TransactionModel;
 use App\Models\TransactionDetailModel;
+use App\Models\KritikdansaranModel;
 
 class PageController extends Controller
 {
     public function homepage() {
         $products = ProductModel::all();
+        $kritik = KritikdansaranModel::take(2)->orderBy('created_at', 'desc')->get();
 
-        return view('home', compact('products'));
+        return view('home', compact('products','kritik'));
     }
 
     public function profile() {
@@ -76,6 +78,14 @@ class PageController extends Controller
         $replyComment = ReplyCommentModel::where('product_id', $productId)->orderBy('created_at', 'asc')->get();
         
         return view('product.product', compact('product', 'comments', 'totalComments', 'productLikes', 'total_likes', 'replyComment'));
+    }
+    public function kritik(){
+        $kritik=KritikdansaranModel::where('user_id',auth()->user()->id)->get();
+        return view('kritikdansaran',compact('kritik'));
+    }
+    public function semuakritik(){
+        $kritik=KritikdansaranModel::all();
+        return view('semuakritik',compact('kritik'));
     }
 
 }

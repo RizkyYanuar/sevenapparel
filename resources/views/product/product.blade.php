@@ -31,15 +31,18 @@
                 <p class="text-base text-gray-700">Harga: <span class="text-black">{{ $product->harga }}</span>
                 </p>
                 <div class="w-full">
-                    <form action="/product/checkout" method="post" class="inline">
-                        @csrf
-                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                        <input type="hidden" name="harga" value="{{ $product->harga }}">
-                        <button type="submit"
-                            class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 mt-2 duration-100">Beli
-                            Sekarang</button>
-                    </form>
+                    @if (auth()->user()->roles === 'user' || auth()->user()->roles === 'admin')
+                        <form action="/product/checkout" method="post" class="inline">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                            <input type="hidden" name="harga" value="{{ $product->harga }}">
+                            <button type="submit"
+                                class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 mt-2 duration-100">Checkout</button>
+                        </form>
+                    @else
+                        <p class="text-sm italic text-red-500">*Anda Harus Memiliki role User untuk Checkout</p>
+                    @endif
                     @if (auth()->user()->roles === 'admin')
                         <form action="/product/{{ $product->id }}/editproduct" method="get" class="inline">
                             @csrf
@@ -96,23 +99,30 @@
                     @endif
                 </div>
                 <div class="likes">
-                    @if ($product->likes->contains('userId', auth()->user()->id))
-                        <form action="/product/unlike" method="post" id="productUnlikeForm" class="inline">
-                            @csrf
-                            <input type="hidden" name="userId" value="{{ auth()->user()->id }}">
-                            <input type="hidden" name="productId" value="{{ $product->id }}">
-                            <button type="submit" class=""><i
-                                    class="bi bi-heart-fill text-base text-red-500"></i></button>
-                        </form>
+                    @if (auth()->user()->roles === 'guest')
+                        <i class="bi bi-heart text-base"></i>
+                        <p class="text-base inline">{{ $total_likes }}</p>
+                        <p class="text-sm italic text-red-500">*Anda harus Memiliki role User untuk Memberi Like.</p>
                     @else
-                        <form action="/product/like" method="post" id="productLikeForm" class="inline">
-                            @csrf
-                            <input type="hidden" name="productId" value="{{ $product->id }}">
-                            <input type="hidden" name="userId" value="{{ auth()->user()->id }}">
-                            <button type="submit"><i class="bi bi-heart text-base"></i></button>
-                        </form>
+                        @if ($product->likes->contains('userId', auth()->user()->id))
+                            <form action="/product/unlike" method="post" id="productUnlikeForm" class="inline">
+                                @csrf
+                                <input type="hidden" name="userId" value="{{ auth()->user()->id }}">
+                                <input type="hidden" name="productId" value="{{ $product->id }}">
+                                <button type="submit" class=""><i
+                                        class="bi bi-heart-fill text-base text-red-500"></i></button>
+                            </form>
+                            <p class="text-base inline">{{ $total_likes }}</p>
+                        @else
+                            <form action="/product/like" method="post" id="productLikeForm" class="inline">
+                                @csrf
+                                <input type="hidden" name="productId" value="{{ $product->id }}">
+                                <input type="hidden" name="userId" value="{{ auth()->user()->id }}">
+                                <button type="submit"><i class="bi bi-heart text-base"></i></button>
+                            </form>
+                            <p class="text-base inline">{{ $total_likes }}</p>
+                        @endif
                     @endif
-                    <p class="text-base inline">{{ $total_likes }}</p>
                 </div>
 
             </div>
@@ -139,7 +149,7 @@
                 </div>
             </form>
         @else
-            <p class="text-base my-4 text-gray-700 italic bold">Anda Harus Memiliki Role User untuk berkomentar.</p>
+            <p class="text-sm my-4 text-red-500 italic">*Anda Harus Memiliki Role User untuk berkomentar.</p>
         @endif
         @if (!isset($comments))
             <p class="text-base">Belum ada Komentar.</p>
@@ -168,110 +178,115 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="w-11 h-11 flex gap-3">
-                            <form action="/{{ $comment->id }}/likecomment" method="post"
-                                data-form-id="commentLikeForm" class="commentLikeForm hidden">
-                                @csrf
-                                <input type="hidden" value="{{ auth()->user()->id }}" name="user_id">
-                                <input type="hidden" value="{{ $comment->id }}" name="comment_id">
-                                <input type="hidden" value="{{ $product->id }}" name="product_id">
-                            </form>
-                            <form action="/{{ $comment->id }}/unlikecomment" method="post"
-                                data-form-id="commentLikeForm" class="commentUnlikeForm hidden">
-                                @csrf
-                                <input type="hidden" value="{{ auth()->user()->id }}" name="user_id">
-                                <input type="hidden" value="{{ $comment->id }}" name="comment_id">
-                                <input type="hidden" value="{{ $product->id }}" name="product_id">
-                            </form>
-                            @if ($comment->likes->contains('user_id', auth()->user()->id))
-                                <div class="flex comment-unlike-button gap-1"><i
-                                        class="bi bi-heart-fill text-red-500 cursor-pointer text-base"></i>{{ $comment->likes_count }}
-                                </div>
+                        <div class="komen-cuk h-11 flex gap-3">
+                            @if (auth()->user()->roles === 'guest')
+                                <p class="text-sm text-red-500 italic">*Anda harus memiliki role User untuk memberi
+                                    like dan membalas komentar.</p>
                             @else
-                                <div class="flex comment-like-button gap-1"><i
-                                        class="bi bi-heart cursor-pointer text-base"></i>{{ $comment->likes_count }}
-                                </div>
-                            @endif
-                            <i class="bi bi-chat-right-text hover:cursor-pointer"
-                                data-modal-target="reply-comment-modal-{{ $comment->id }}"
-                                data-modal-toggle="reply-comment-modal-{{ $comment->id }}"></i>
-                            <div id="reply-comment-modal-{{ $comment->id }}" tabindex="-1" aria-hidden="true"
-                                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                                <div class="relative p-4 w-full max-w-2xl max-h-full">
-                                    <button type="button"
-                                        class="text-gray-400 bg-white hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center mb-2"
-                                        data-modal-hide="reply-comment-modal-{{ $comment->id }}">
-                                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                            fill="none" viewBox="0 0 14 14">
-                                            <path stroke="currentColor" stroke-linecap="round"
-                                                stroke-linejoin="round" stroke-width="2"
-                                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                                        </svg>
-                                        <span class="sr-only">Close modal</span>
-                                    </button>
-                                    <form action="/comment/reply" method="post">
-                                        @csrf
-                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                        <input type="hidden" name="comment_id" value="{{ $comment->id }}">
-                                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                                        <textarea id="message" rows="4"
-                                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                                            placeholder="Tulis Balasan anda disini." name="comment"></textarea>
-                                        <button type="submit"
-                                            class="text-white mt-2 hover:text-gray-300">Balas</button>
-                                    </form>
-                                </div>
-                            </div>
-                            @if ($comment->user->id === auth()->user()->id)
-                                <i class="bi bi-trash3 text-red-500 hover:cursor-pointer hover:text-red-600"
-                                    data-modal-target="delete-comment-modal-{{ $comment->id }}"
-                                    data-modal-toggle="delete-comment-modal-{{ $comment->id }}"></i>
-                                <div id="delete-comment-modal-{{ $comment->id }}" tabindex="-1"
+                                <form action="/{{ $comment->id }}/likecomment" method="post"
+                                    data-form-id="commentLikeForm" class="commentLikeForm hidden">
+                                    @csrf
+                                    <input type="hidden" value="{{ auth()->user()->id }}" name="user_id">
+                                    <input type="hidden" value="{{ $comment->id }}" name="comment_id">
+                                    <input type="hidden" value="{{ $product->id }}" name="product_id">
+                                </form>
+                                <form action="/{{ $comment->id }}/unlikecomment" method="post"
+                                    data-form-id="commentLikeForm" class="commentUnlikeForm hidden">
+                                    @csrf
+                                    <input type="hidden" value="{{ auth()->user()->id }}" name="user_id">
+                                    <input type="hidden" value="{{ $comment->id }}" name="comment_id">
+                                    <input type="hidden" value="{{ $product->id }}" name="product_id">
+                                </form>
+                                @if ($comment->likes->contains('user_id', auth()->user()->id))
+                                    <div class="flex comment-unlike-button gap-1"><i
+                                            class="bi bi-heart-fill text-red-500 cursor-pointer text-base"></i>{{ $comment->likes_count }}
+                                    </div>
+                                @else
+                                    <div class="flex comment-like-button gap-1"><i
+                                            class="bi bi-heart cursor-pointer text-base"></i>{{ $comment->likes_count }}
+                                    </div>
+                                @endif
+                                <i class="bi bi-chat-right-text hover:cursor-pointer"
+                                    data-modal-target="reply-comment-modal-{{ $comment->id }}"
+                                    data-modal-toggle="reply-comment-modal-{{ $comment->id }}"></i>
+                                <div id="reply-comment-modal-{{ $comment->id }}" tabindex="-1" aria-hidden="true"
                                     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                                    <div class="relative p-4 w-full max-w-md max-h-full">
-                                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                                            <button type="button"
-                                                class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
-                                                data-modal-hide="delete-comment-modal-{{ $comment->id }}">
-                                                <svg class="w-3 h-3" aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 14 14">
-                                                    <path stroke="currentColor" stroke-linecap="round"
-                                                        stroke-linejoin="round" stroke-width="2"
-                                                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                                                </svg>
-                                                <span class="sr-only">Close</span>
-                                            </button>
-                                            <div class="p-4 md:p-5 text-center">
-                                                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12" aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 20 20">
-                                                    <path stroke="currentColor" stroke-linecap="round"
-                                                        stroke-linejoin="round" stroke-width="2"
-                                                        d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                                </svg>
-                                                <h3 class="mb-5 text-lg font-normal text-gray-500">
-                                                    Yakin
-                                                    ingin menghapus Komentar ini?</h3>
-                                                <form action="/comment/delete" method="post" class="inline">
-                                                    @csrf
-                                                    <input type="hidden" name="comment_id"
-                                                        value="{{ $comment->id }}">
-                                                    <button type="submit"
-                                                        class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
-                                                        Ya, Saya yakin.
-                                                    </button>
-                                                </form>
-                                                <button data-modal-hide="delete-comment-modal-{{ $comment->id }}"
-                                                    type="button"
-                                                    class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Tidak,
-                                                    Kembali.</button>
+                                    <div class="relative p-4 w-full max-w-2xl max-h-full">
+                                        <button type="button"
+                                            class="text-gray-400 bg-white hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center mb-2"
+                                            data-modal-hide="reply-comment-modal-{{ $comment->id }}">
+                                            <svg class="w-3 h-3" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 14 14">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                            </svg>
+                                            <span class="sr-only">Close modal</span>
+                                        </button>
+                                        <form action="/comment/reply" method="post">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <input type="hidden" name="comment_id" value="{{ $comment->id }}">
+                                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                                            <textarea id="message" rows="4"
+                                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                                placeholder="Tulis Balasan anda disini." name="comment"></textarea>
+                                            <button type="submit"
+                                                class="text-white mt-2 hover:text-gray-300">Balas</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                @if ($comment->user->id === auth()->user()->id)
+                                    <i class="bi bi-trash3 text-red-500 hover:cursor-pointer hover:text-red-600"
+                                        data-modal-target="delete-comment-modal-{{ $comment->id }}"
+                                        data-modal-toggle="delete-comment-modal-{{ $comment->id }}"></i>
+                                    <div id="delete-comment-modal-{{ $comment->id }}" tabindex="-1"
+                                        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                        <div class="relative p-4 w-full max-w-md max-h-full">
+                                            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                                <button type="button"
+                                                    class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                                                    data-modal-hide="delete-comment-modal-{{ $comment->id }}">
+                                                    <svg class="w-3 h-3" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 14 14">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-linejoin="round" stroke-width="2"
+                                                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                                    </svg>
+                                                    <span class="sr-only">Close</span>
+                                                </button>
+                                                <div class="p-4 md:p-5 text-center">
+                                                    <svg class="mx-auto mb-4 text-gray-400 w-12 h-12"
+                                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none" viewBox="0 0 20 20">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-linejoin="round" stroke-width="2"
+                                                            d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                    </svg>
+                                                    <h3 class="mb-5 text-lg font-normal text-gray-500">
+                                                        Yakin
+                                                        ingin menghapus Komentar ini?</h3>
+                                                    <form action="/comment/delete" method="post" class="inline">
+                                                        @csrf
+                                                        <input type="hidden" name="comment_id"
+                                                            value="{{ $comment->id }}">
+                                                        <button type="submit"
+                                                            class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                                                            Ya, Saya yakin.
+                                                        </button>
+                                                    </form>
+                                                    <button data-modal-hide="delete-comment-modal-{{ $comment->id }}"
+                                                        type="button"
+                                                        class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Tidak,
+                                                        Kembali.</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                @endif
                             @endif
-
                         </div>
                     </div>
 

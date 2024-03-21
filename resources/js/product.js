@@ -51,7 +51,7 @@ commentLikeButton.forEach((button) => {
     button.addEventListener("click", function (event) {
         event.preventDefault(); // Mencegah pengiriman formulir
         const formId = button
-            .closest(".w-11")
+            .closest(".komen-cuk")
             .querySelector(".commentLikeForm");
         const formData = new FormData(formId);
         fetch(formId.action, {
@@ -81,7 +81,7 @@ commentUnlikeButton.forEach((button) => {
     button.addEventListener("click", function (event) {
         event.preventDefault(); // Mencegah pengiriman formulir
         const formId = button
-            .closest(".w-11")
+            .closest(".komen-cuk")
             .querySelector(".commentUnlikeForm");
         const formData = new FormData(formId);
         fetch(formId.action, {

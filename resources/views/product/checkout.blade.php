@@ -16,7 +16,7 @@ $snap_token = $transactionArray[0]; ?>
 
 <body>
     @include('components/navbar')
-    <div class="w-full h-screen px-16 py-4 fs-poppins">
+    <div class="w-full px-16 py-4 fs-poppins">
         <p class="text-3xl fs-outfit">Detail Pemesanan</p>
         <p class="text-base text-gray-700 mb-4">Anda akan melakukan checkout <span
                 class="text-blue-500">{{ $product->product_name }}</span>
