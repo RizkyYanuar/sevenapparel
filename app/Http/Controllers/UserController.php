@@ -90,12 +90,14 @@ class UserController extends Controller
         'desc' => 'required|string',
         'stock' => 'required|integer',
         'harga' => 'required',
+        'kategori' => 'required',
         ], [
         'product_name.required' => 'Mohon isi nama produk.',
         'product_image.max' => 'Mohon masukkan ukuran gambar dibawah 1mb.',
         'desc.required' => 'Mohon isi deskripsi produk.',
         'stock.required' => 'Mohon isi stock produk.',
         'harga.required' => 'Mohon isi harga produk.',
+        'kategori.required' => 'Mohon isi kategori produk.',
         ]);
 
         $credentials = [
@@ -103,6 +105,7 @@ class UserController extends Controller
         'desc' => $request->desc,
         'stock' => $request->stock,
         'harga' => $request->harga,
+        'kategori' => $request->kategori,
         'product_image' => $request->file('product_image')->store('productimg'),
         ];
 
@@ -121,6 +124,7 @@ class UserController extends Controller
         'desc' => 'required|string',
         'stock' => 'required|integer',
         'harga' => 'required',
+        'kategori' => 'required',
         ], [
         'product_name.required' => 'Mohon isi nama produk.',
         'product_image.max' => 'Mohon masukkan ukuran gambar dibawah 1mb.',
@@ -128,6 +132,7 @@ class UserController extends Controller
         'desc.required' => 'Mohon isi deskripsi produk.',
         'stock.required' => 'Mohon isi stock produk.',
         'harga.required' => 'Mohon isi harga produk.',
+        'kategori.required' => 'Mohon isi kategori produk.',
         ]);
 
         $credentials = [
@@ -135,6 +140,7 @@ class UserController extends Controller
         'desc' => $request->desc,
         'stock' => $request->stock,
         'harga' => $request->harga,
+        'kategori' => $request->kategori,
         ];
 
         if($request->product_image) {
@@ -144,11 +150,9 @@ class UserController extends Controller
             $credentials['product_image'] = $request->old_product_image;
         }
 
-        // Membuat user baru
         ProductModel::where('id', $productId)->update($credentials);
 
-        // Redirect ke halaman setelah registrasi berhasil
-        return redirect('/product/' . $productId)->with('success', 'Berhasil Mengedit Product.');
+        return redirect('/product/listproduct')->with('success', 'Berhasil Mengedit Product.');
     }
 
     public function editProfile(Request $request, $userId) {
@@ -212,7 +216,7 @@ class UserController extends Controller
         }
         
         if ($deletedProduct) {
-            return redirect('/home#featured-product')->with('success', 'Berhasil Menghapus Product');
+            return redirect()->back()->with('success', 'Berhasil Menghapus Product');
         } else {
             return redirect()->back();
         }

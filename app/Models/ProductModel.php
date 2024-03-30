@@ -21,5 +21,6 @@ class ProductModel extends Model
     'desc',
     'stock',
     'harga',
+    'kategori',
     ];
 }

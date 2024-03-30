@@ -53,10 +53,24 @@
                 Perspiciatis, atque?</p>
         </div>
     </div>
-    <div class="latest-arrival w-full px-16 fs-poppins flex items-center justify-center">
+    <div class="latest-arrival w-full px-16 fs-poppins grid items-center grid-cols-2 fs-poppins">
+        <div class="w-full h-full bg-[#deeceb] p-4 flex items-center">
+            <div>
+                <p class="text-3xl fs-outfit">
+                    Fashion Katalog
+                </p>
+                <p class="text-base text-gray-700">
+                    Belanja Di Seven Apparel Dengan Diskon 50%!!
+                </p>
+                <p class="text-base">
+                    Jangan lewatkan kesempatan istimewa ini! Dapatkan produk unggulan kami dengan harga terbaik. Segera
+                    checkout untuk nikmati pengalaman belanja yang tak terlupakan.
+                </p>
+            </div>
+        </div>
         <div id="default-carousel" class="relative w-[540px]" data-carousel="slide">
             <!-- Carousel wrapper -->
-            <div class="relative overflow-hidden rounded-lg h-[270px]">
+            <div class="relative overflow-hidden h-[270px]">
                 <!-- Item 3 -->
                 <div class="hidden duration-700 ease-in-out" data-carousel-item>
                     <img src="{{ asset('img/sale3.png') }}"
@@ -112,20 +126,77 @@
         </div>
     </div>
     <div class="featured-product w-full p-20 fs-poppins" id="featured-product">
-        <p class="text-3xl fs-outfit">Featured Product</p>
         <p class="text-base text-gray-700">Showing our Featured Product on Seven Apparel.</p>
-        <div class="grid grid-cols-5 gap-6 mt-6">
-            @foreach ($products as $product)
-                @if ($product->stock > 0)
+        <p class="text-3xl fs-outfit mt-6 mb-2">Jaket</p>
+        <div class="grid grid-cols-5 gap-6">
+            @foreach ($produkjaket as $jaket)
+                @if ($jaket->stock > 0)
                     <div class="w-full border border-gray-400 rounded">
                         <div class="h-52 overflow-y-hidden mb-3">
-                            <img src="storage/{{ $product->product_image }}" alt="">
+                            <img src="storage/{{ $jaket->product_image }}" alt="">
                         </div>
                         <div class="px-2 pb-2">
-                            <a href="/product/{{ $product->id }}"
-                                class="text-gray-700 uppercase fs-outfit">{{ $product->product_name }}</a>
-                            <p class="text-sm text-gray-500">Stock: {{ $product->stock }}</p>
-                            <p class="text-base font-bold">Rp{{ $product->harga }}</p>
+                            <a href="/product/{{ $jaket->id }}"
+                                class="text-gray-700 uppercase fs-outfit">{{ $jaket->product_name }}</a>
+                            <p class="text-sm text-gray-500">Stock: {{ $jaket->stock }}</p>
+                            <p class="text-base font-bold">Rp{{ $jaket->harga }}</p>
+                        </div>
+                    </div>
+                @endif
+            @endforeach
+        </div>
+        <p class="text-3xl fs-outfit mt-6 mb-2">Sepatu</p>
+
+        <div class="grid grid-cols-5 gap-6">
+            @foreach ($produksepatu as $sepatu)
+                @if ($sepatu->stock > 0)
+                    <div class="w-full border border-gray-400 rounded">
+                        <div class="h-52 overflow-y-hidden mb-3">
+                            <img src="storage/{{ $sepatu->product_image }}" alt="">
+                        </div>
+                        <div class="px-2 pb-2">
+                            <a href="/product/{{ $sepatu->id }}"
+                                class="text-gray-700 uppercase fs-outfit">{{ $sepatu->product_name }}</a>
+                            <p class="text-sm text-gray-500">Stock: {{ $sepatu->stock }}</p>
+                            <p class="text-base font-bold">Rp{{ $sepatu->harga }}</p>
+                        </div>
+                    </div>
+                @endif
+            @endforeach
+        </div>
+        <p class="text-3xl fs-outfit mt-6 mb-2">Topi</p>
+
+        <div class="grid grid-cols-5 gap-6">
+            @foreach ($produktopi as $topi)
+                @if ($topi->stock > 0)
+                    <div class="w-full border border-gray-400 rounded">
+                        <div class="h-52 overflow-y-hidden mb-3">
+                            <img src="storage/{{ $topi->product_image }}" alt="">
+                        </div>
+                        <div class="px-2 pb-2">
+                            <a href="/product/{{ $topi->id }}"
+                                class="text-gray-700 uppercase fs-outfit">{{ $topi->product_name }}</a>
+                            <p class="text-sm text-gray-500">Stock: {{ $topi->stock }}</p>
+                            <p class="text-base font-bold">Rp{{ $topi->harga }}</p>
+                        </div>
+                    </div>
+                @endif
+            @endforeach
+        </div>
+        <p class="text-3xl fs-outfit mt-6 mb-2">Aksesoris</p>
+
+        <div class="grid grid-cols-5 gap-6">
+            @foreach ($produkaksesoris as $aksesoris)
+                @if ($aksesoris->stock > 0)
+                    <div class="w-full border border-gray-400 rounded">
+                        <div class="h-52 overflow-y-hidden mb-3">
+                            <img src="storage/{{ $aksesoris->product_image }}" alt="">
+                        </div>
+                        <div class="px-2 pb-2">
+                            <a href="/product/{{ $aksesoris->id }}"
+                                class="text-gray-700 uppercase fs-outfit">{{ $aksesoris->product_name }}</a>
+                            <p class="text-sm text-gray-500">Stock: {{ $aksesoris->stock }}</p>
+                            <p class="text-base font-bold">Rp{{ $aksesoris->harga }}</p>
                         </div>
                     </div>
                 @endif

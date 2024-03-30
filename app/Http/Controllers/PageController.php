@@ -16,9 +16,13 @@ class PageController extends Controller
 {
     public function homepage() {
         $products = ProductModel::all();
+        $produkjaket = ProductModel::where('kategori', 'jaket')->get();
+        $produksepatu = ProductModel::where('kategori', 'sepatu')->get();
+        $produktopi = ProductModel::where('kategori', 'topi')->get();
+        $produkaksesoris = ProductModel::where('kategori', 'aksesoris')->get();
         $kritik = KritikdansaranModel::take(2)->orderBy('created_at', 'desc')->get();
 
-        return view('home', compact('products','kritik'));
+        return view('home', compact('products','kritik', 'produkjaket', 'produksepatu', 'produktopi', 'produkaksesoris'));
     }
 
     public function profile() {
@@ -86,6 +90,14 @@ class PageController extends Controller
     public function semuakritik(){
         $kritik=KritikdansaranModel::all();
         return view('semuakritik',compact('kritik'));
+    }
+    public function listproduct(){
+        $semuaproduk=ProductModel::all();
+        return view('listproduk',compact('semuaproduk'));
+    }
+
+    public function paymenterror() {
+        return redirect()->back()->with('error', 'Pembayaran tidak bisa dilakukan karena telah melewati 24 jam.');
     }
 
 }

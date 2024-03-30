@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('desc')->default('Belum Ada Deskripsi.');
             $table->integer('stock')->default(0);
             $table->bigInteger('harga');
+            $table->string('kategori')->nullable();
             $table->timestamps();
         });
     }

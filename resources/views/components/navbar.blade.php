@@ -8,8 +8,6 @@
                 <a href="/home" class="nav-link">Home</a>
                 <a href="/home#featured-product" class="nav-link">Produk</a>
                 <a href="/home#feedback" class="nav-link">Feedback</a>
-                <a href="/home#about" class="nav-link">About</a>
-                <a href="" class="nav-link">Get in Touch</a>
             </div>
 
             <div class="basis-3/12 flex justify-center items-center gap-6">
@@ -23,6 +21,9 @@
                         <span class="block w-full h-0.5 bg-slate-400 "></span>
                         <a href="/product/createproduct" class="block p-3 hover:bg-slate-100 w-full text-left text-sm">
                             <button type="button">Tambah Produk</button></a>
+                        <span class="block w-full h-0.5 bg-slate-400 "></span>
+                        <a href="/product/listproduct" class="block p-3 hover:bg-slate-100 w-full text-left text-sm">
+                            <button type="button">List Produk</button></a>
                     </div>
                 @endif
                 <a href="/user/profile"> <i class="bi bi-person-fill text-2xl"></i>

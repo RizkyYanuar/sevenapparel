@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth', 'cekroles:admin']], function() {
     Route::get('/product/{productId}/editproduct', [PageController::class, 'editProductForm'])->name('editProductForm');
     Route::post('/product/{productId}/editproduct', [UserController::class, 'editProduct'])->name('editProduct');
     Route::post('/product/{productId}/deleteproduct', [UserController::class, 'deleteProduct'])->name('deleteproduct');
+    Route::get('/product/listproduct',[PageController::class,'listproduct'])->name('listprodut');
 });
 Route::group(['middleware' => ['auth', 'cekroles:admin,guest,user']], function() {
     Route::get('/home', [PageController::class,'homepage'])->name('home');
@@ -51,8 +52,8 @@ Route::group(['middleware' => ['auth', 'cekroles:admin,user']], function() {
     Route::post('/product/like', [UserController::class, 'productLike'])->name('productLike');
     Route::post('/product/unlike', [UserController::class, 'productUnlike'])->name('productUnlike');
     Route::post('/{productId}/comment', [UserController::class,'comment'])->name('comment');
-    Route::get('/product/checkout/{productId}', [TransactionController::class, 'checkout'])->name('checkout');
     Route::post('/product/checkout', [TransactionController::class, 'process'])->name('process');
+    Route::get('/product/checkout/{productId}', [TransactionController::class, 'checkout'])->name('checkout');
     Route::get('/product/checkout/success/{transactionId}/{productId}', [TransactionController::class, 'success'])->name('transactionSuccess');
     Route::post('/{commentId}/likecomment', [UserController::class,'likecomment'])->name('likecomment');
     Route::post('/{commentId}/unlikecomment', [UserController::class,'unlikecomment'])->name('unlikecomment');
@@ -63,5 +64,5 @@ Route::group(['middleware' => ['auth', 'cekroles:admin,user']], function() {
     Route::post('/kritikdansaran', [KritikController::class, 'kirimkritik'])->name('kirimkritik');
     Route::post('/kritikdansaran/delete', [KritikController::class, 'deletekritik'])->name('deletekritik');
     Route::post('/kritikdansaran/edit', [KritikController::class, 'editkritik'])->name('editkritik');
-
+    Route::get('/paymenterror', [PageController::class, 'paymenterror'])->name('paymenterror');
 });

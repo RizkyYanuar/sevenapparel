@@ -69,7 +69,7 @@
                         </label>
                         <textarea id="alamat" rows="4"
                             class="block p-2.5 w-full text-base text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
-                            placeholder="Jl. . . . . ." name="alamat"></textarea>
+                            placeholder="Jl. . . . . ." name="alamat">{{ auth()->user()->alamat }}</textarea>
                     </div>
                     <button type="submit"
                         class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Simpan
@@ -82,9 +82,11 @@
             <div class="flex flex-row gap-8 mb-3">
                 <div class="w-32 h-32 rounded-full">
                     @if (auth()->user()->user_image)
-                        <img src="{{ asset('storage/' . auth()->user()->user_image) }}" alt="">
+                        <img src="{{ asset('storage/' . auth()->user()->user_image) }}" alt=""
+                            class="w-32 h-32 rounded-full object-cover">
                     @else
-                        <img src="{{ asset('storage/userimg/defaultuser.png') }}" alt="">
+                        <img src="{{ asset('storage/userimg/defaultuser.png') }}" alt=""
+                            class="w-32 h-32 rounded-full object-cover">
                     @endif
                 </div>
                 <div class="flex flex-col justify-center">
@@ -168,7 +170,15 @@
                                     {{ $transaction->harga }}
                                 </td>
                                 <td class="px-6 py-4 capitalize">
-                                    {{ $transaction->status }}
+                                    @if ($transaction->status === 'pending')
+                                        <p class="text-base capitalize text-yellow-300">
+                                            {{ $transaction->status }}
+                                        </p>
+                                    @else
+                                        <p class="text-base capitalize text-green-500">
+                                            {{ $transaction->status }}
+                                        </p>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <p class="font-medium text-blue-600 hover:underline hover:cursor-pointer"
@@ -232,7 +242,15 @@
                                             </div>
                                             <div class="flex justify-between">
                                                 <p class="text-base text-gray-800">Status Transaksi:</p>
-                                                <p class="text-base capitalize">{{ $transaction->status }}</p>
+                                                @if ($transaction->status === 'pending')
+                                                    <p class="text-base capitalize text-yellow-300">
+                                                        {{ $transaction->status }}
+                                                    </p>
+                                                @else
+                                                    <p class="text-base capitalize text-green-500">
+                                                        {{ $transaction->status }}
+                                                    </p>
+                                                @endif
                                             </div>
                                         </div>
                                         <!-- Modal footer -->
@@ -240,10 +258,42 @@
                                             <button data-modal-hide="transaction-modal-{{ $transaction->id }}"
                                                 type="button"
                                                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Konfirmasi</button>
+                                            @if ($transaction->status === 'pending')
+                                                <button
+                                                    class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ms-4"
+                                                    id="pay-button-{{ $transaction->id }}">
+                                                    Bayar
+                                                </button>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}">
+                            </script>
+                            <script type="text/javascript">
+                                document.getElementById('pay-button-{{ $transaction->id }}').onclick = function() {
+                                    // SnapToken acquired from previous step
+                                    snap.pay('{{ $transaction->snap_token }}', {
+                                        // Optional
+                                        onSuccess: function(result) {
+                                            /* You may add your own js here, this is just example */
+                                            window.location.href =
+                                                "{{ route('transactionSuccess', ['transactionId' => $transaction->id, 'productId' => $transaction->product->id]) }}";
+
+                                        },
+                                        // Optional
+                                        onPending: function(result) {
+                                            /* You may add your own js here, this is just example */
+                                            window.location.href = "{{ route('paymenterror') }}"
+                                        },
+                                        // Optional
+                                        onError: function(result) {
+                                            window.location.href = "{{ route('paymenterror') }}"
+                                        }
+                                    });
+                                };
+                            </script>
                         @endforeach
                     </tbody>
                 </table>
@@ -251,6 +301,7 @@
         </div>
     </div>
     @include('components/footer')
+
 </body>
 
 </html>
