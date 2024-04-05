@@ -16,7 +16,7 @@
     <div class="w-full bg-[#deeceb] px-16 py-8 grid grid-cols-2 fs-poppins gap-6">
         <div class="flex flex-col gap-4 bg-white rounded-lg p-8">
             <p class="text-4xl fs-outfit">Customize Your Profile</p>
-            <form action="profile/{{ auth()->user()->id }}" method="post" enctype="multipart/form-data"
+            <form action="/user/profile/{{ auth()->user()->id }}" method="post" enctype="multipart/form-data"
                 class="w-full flex items-center">
                 @csrf
                 <input type="hidden" name="old_user_image"
@@ -42,7 +42,7 @@
                         <label for="no_telp"
                             class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Nomor Telepon:
                         </label>
-                        <input type="number" id="no_telp" aria-describedby="helper-text-explanation"
+                        <input type="text" id="no_telp" aria-describedby="helper-text-explanation"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                             placeholder="+62...." name="no_telp" value="{{ old('no_telp', auth()->user()->no_telp) }}">
                     </div>

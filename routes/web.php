@@ -5,7 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\KritikController;
-
+use App\Http\Controllers\PHPMailerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +44,11 @@ Route::group(['middleware' => ['auth', 'cekroles:admin,guest,user']], function()
     Route::get('/user/profile', [PageController::class, 'profile'])->name('profile');
     Route::post('/user/profile/{userId}', [UserController::class, 'editProfile'])->name('editProfile');
     Route::get('/kritikdansaran/semua',[PageController::class, 'semuakritik'])->name('semuakritik');
+    Route::get('/user/notice', [PHPMailerController::class, 'notice'])->name('notice');
+    Route::post('/user/verifyemail', [PHPMailerController::class, 'verifyEmail'])->name('verifyEmail');
+    Route::get('/user/verifyaccount', [UserController::class, 'verifyAccount'])->name('verifyAccount');
+    Route::get('/user/verifysuccess', [PageController::class, 'verifysuccess'])->name('verifysuccess');
+    Route::get('/user/verifypending', [PageController::class, 'verifypending'])->name('verifypending');
 });
 Route::group(['middleware' => ['auth', 'cekroles:admin,guest']], function() {
     Route::get('/status', [PageController::class,'statuspage'])->name('status-page');

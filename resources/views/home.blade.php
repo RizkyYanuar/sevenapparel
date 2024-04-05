@@ -31,26 +31,26 @@
         <div class="w-full flex flex-col gap-2">
             <i class="bi bi-truck text-7xl text-[#6d9fa3]"></i>
             <p class="text-xl font-bold">Gratis Ongkir</p>
-            <p class="text-base text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Perspiciatis, atque?</p>
+            <p class="text-base text-gray-500">Selalu tersedia gratis Ongkir untuk Setiap Pesananmu!
+                Nikmati Pengiriman Gratis, Belanja Lebih Untung, Hemat Lebih Banyak!</p>
         </div>
         <div class="w-full flex flex-col gap-2">
             <i class="bi bi-credit-card text-7xl text-[#6d9fa3]"></i>
             <p class="text-xl font-bold">Pembayaran Aman</p>
-            <p class="text-base text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Perspiciatis, atque?</p>
+            <p class="text-base text-gray-500">Langkah Teguh dengan Pembayaran Aman! Transaksi Tanpa Batas Khawatir,
+                Kepercayaan Terjaga Tiap Saat!</p>
         </div>
         <div class="w-full flex flex-col gap-2">
             <i class="bi bi-clock text-7xl text-[#6d9fa3]"></i>
-            <p class="text-xl font-bold">Support 24/7</p>
-            <p class="text-base text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Perspiciatis, atque?</p>
+            <p class="text-xl font-bold">Pelayanan Cepat</p>
+            <p class="text-base text-gray-500">Pelayanan Kami Siap Memberikan Respons Cepat dan Tanggap, Memberikan
+                Pengalaman Terbaik untuk Setiap Kebutuhan Anda!</p>
         </div>
         <div class="w-full flex flex-col gap-2">
             <i class="bi bi-fingerprint text-7xl text-[#6d9fa3]"></i>
             <p class="text-xl font-bold">Barang Original</p>
-            <p class="text-base text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Perspiciatis, atque?</p>
+            <p class="text-base text-gray-500">Jaminan Keaslian Terpercaya! Pilih Hanya Barang Original untuk Kualitas
+                Tak Terbantahkan dan Kepuasan Tanpa Batas!</p>
         </div>
     </div>
     <div class="latest-arrival w-full px-16 fs-poppins grid items-center grid-cols-2 fs-poppins">
@@ -127,12 +127,12 @@
     </div>
     <div class="featured-product w-full p-20 fs-poppins" id="featured-product">
         <p class="text-base text-gray-700">Showing our Featured Product on Seven Apparel.</p>
-        <p class="text-3xl fs-outfit mt-6 mb-2">Jaket</p>
+        <p class="text-3xl fs-outfit mt-6 mb-2" id="produkjaket">Jaket</p>
         <div class="grid grid-cols-5 gap-6">
             @foreach ($produkjaket as $jaket)
                 @if ($jaket->stock > 0)
                     <div class="w-full border border-gray-400 rounded">
-                        <div class="h-52 overflow-y-hidden mb-3">
+                        <div class="h-52 overflow-y-hidden mb-3 bg-[#deeceb]">
                             <img src="storage/{{ $jaket->product_image }}" alt="">
                         </div>
                         <div class="px-2 pb-2">
@@ -145,13 +145,13 @@
                 @endif
             @endforeach
         </div>
-        <p class="text-3xl fs-outfit mt-6 mb-2">Sepatu</p>
+        <p class="text-3xl fs-outfit mt-6 mb-2" id="produksepatu">Sepatu</p>
 
         <div class="grid grid-cols-5 gap-6">
             @foreach ($produksepatu as $sepatu)
                 @if ($sepatu->stock > 0)
                     <div class="w-full border border-gray-400 rounded">
-                        <div class="h-52 overflow-y-hidden mb-3">
+                        <div class="h-52 overflow-y-hidden mb-3 bg-[#deeceb]">
                             <img src="storage/{{ $sepatu->product_image }}" alt="">
                         </div>
                         <div class="px-2 pb-2">
@@ -164,13 +164,13 @@
                 @endif
             @endforeach
         </div>
-        <p class="text-3xl fs-outfit mt-6 mb-2">Topi</p>
+        <p class="text-3xl fs-outfit mt-6 mb-2" id="produktopi">Topi</p>
 
         <div class="grid grid-cols-5 gap-6">
             @foreach ($produktopi as $topi)
                 @if ($topi->stock > 0)
                     <div class="w-full border border-gray-400 rounded">
-                        <div class="h-52 overflow-y-hidden mb-3">
+                        <div class="h-52 overflow-y-hidden mb-3 bg-[#deeceb]">
                             <img src="storage/{{ $topi->product_image }}" alt="">
                         </div>
                         <div class="px-2 pb-2">
@@ -183,13 +183,13 @@
                 @endif
             @endforeach
         </div>
-        <p class="text-3xl fs-outfit mt-6 mb-2">Aksesoris</p>
+        <p class="text-3xl fs-outfit mt-6 mb-2" id="produkaksesoris">Aksesoris</p>
 
         <div class="grid grid-cols-5 gap-6">
             @foreach ($produkaksesoris as $aksesoris)
                 @if ($aksesoris->stock > 0)
                     <div class="w-full border border-gray-400 rounded">
-                        <div class="h-52 overflow-y-hidden mb-3">
+                        <div class="h-52 overflow-y-hidden mb-3 bg-[#deeceb]">
                             <img src="storage/{{ $aksesoris->product_image }}" alt="">
                         </div>
                         <div class="px-2 pb-2">
@@ -224,47 +224,56 @@
         </div>
     </div>
     <div class="w-full p-20 fs-poppins">
-        <p class="text-3xl fs-outfit">Shop by Category</p>
-        <p class="text-base text-gray-700">Showing the List Product by Category</p>
+        <p class="text-3xl fs-outfit">Belanja menurut Kategori</p>
+        <p class="text-base text-gray-700">List Kategori Produk</p>
         <div class="grid grid-cols-4 gap-4 mt-6">
             <div class="flex w-full flex-col items-center gap-1">
-                <div class="h-40 bg-sky-600 w-full">
+                <div class="h-44 bg-[#e9e5f1] w-full">
+                    <img src="storage/{{ $produksepatu[0]->product_image }}" alt=""
+                        class="w-full h-full object-cover">
                 </div>
                 <p class="text-base text-gray-600">
-                    Cloths
+                    <a href="#produksepatu">Sepatu</a>
                 </p>
                 <p class="text-sm text-gray-400">
-                    7Apprl Cloths
+                    Sepatu Sevenapprlco.
                 </p>
             </div>
             <div class="flex w-full flex-col items-center gap-1">
-                <div class="h-40 bg-[#e9e5f1] w-full">
+                <div class="h-44 bg-[#e9e5f1] w-full">
+                    <img src="storage/{{ $produkjaket[0]->product_image }}" alt=""
+                        class="w-full h-full object-cover">
                 </div>
                 <p class="text-base text-gray-600">
-                    Bags
+                    <a href="#produkjaket">Jaket</a>
+
                 </p>
                 <p class="text-sm text-gray-400">
-                    7Apprl Bags
+                    Jaket Sevenapprlco.
                 </p>
             </div>
             <div class="flex w-full flex-col items-center gap-1">
-                <div class="h-40 bg-sky-600 w-full">
+                <div class="h-44 bg-[#e9e5f1] w-full">
+                    <img src="storage/{{ $produktopi[0]->product_image }}" alt=""
+                        class="w-full h-full object-cover">
                 </div>
                 <p class="text-base text-gray-600">
-                    Watches
+                    <a href="#produktopi">Topi</a>
                 </p>
                 <p class="text-sm text-gray-400">
-                    7Apprl Watches
+                    Sepatu Sevenapprlco.
                 </p>
             </div>
             <div class="flex w-full flex-col items-center gap-1">
-                <div class="h-40 bg-[#e9e5f1] w-full">
+                <div class="h-44 bg-[#e9e5f1] w-full">
+                    <img src="storage/{{ $produkaksesoris[0]->product_image }}" alt=""
+                        class="w-full h-full object-cover">
                 </div>
                 <p class="text-base text-gray-600">
-                    Jewellery
+                    <a href="#produkaksesoris">Aksesoris</a>
                 </p>
                 <p class="text-sm text-gray-400">
-                    7Apprl Jewellery
+                    Aksesoris Sevenapprlco.
                 </p>
             </div>
 

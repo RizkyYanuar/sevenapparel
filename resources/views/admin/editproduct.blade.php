@@ -76,9 +76,11 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                             name="kategori">
                             <option value="jaket" {{ $product->kategori == 'jaket' ? 'selected' : '' }}>Jaket</option>
-                            <option value="sepatu" {{ $product->kategori == 'jaket' ? 'selected' : '' }}>Sepatu</option>
-                            <option value="topi" {{ $product->kategori == 'jaket' ? 'selected' : '' }}>Topi</option>
-                            <option value="aksesoris" {{ $product->kategori == 'jaket' ? 'selected' : '' }}>Aksesoris
+                            <option value="sepatu" {{ $product->kategori == 'sepatu' ? 'selected' : '' }}>Sepatu
+                            </option>
+                            <option value="topi" {{ $product->kategori == 'topi' ? 'selected' : '' }}>Topi</option>
+                            <option value="aksesoris" {{ $product->kategori == 'aksesoris' ? 'selected' : '' }}>
+                                Aksesoris
                             </option>
                         </select>
                     </div>

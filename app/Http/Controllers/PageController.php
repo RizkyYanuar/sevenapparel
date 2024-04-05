@@ -83,14 +83,17 @@ class PageController extends Controller
         
         return view('product.product', compact('product', 'comments', 'totalComments', 'productLikes', 'total_likes', 'replyComment'));
     }
+
     public function kritik(){
         $kritik=KritikdansaranModel::where('user_id',auth()->user()->id)->get();
         return view('kritikdansaran',compact('kritik'));
     }
+
     public function semuakritik(){
         $kritik=KritikdansaranModel::all();
         return view('semuakritik',compact('kritik'));
     }
+
     public function listproduct(){
         $semuaproduk=ProductModel::all();
         return view('listproduk',compact('semuaproduk'));
@@ -98,6 +101,14 @@ class PageController extends Controller
 
     public function paymenterror() {
         return redirect()->back()->with('error', 'Pembayaran tidak bisa dilakukan karena telah melewati 24 jam.');
+    }
+
+    public function verifysuccess() {
+        return view('verifysuccess');
+    }
+
+    public function verifypending() {
+        return view('verifypending');
     }
 
 }

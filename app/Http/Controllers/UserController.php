@@ -12,6 +12,9 @@ use App\Models\CommentModel;
 use App\Models\ProductLikeModel;
 use App\Models\CommentLikeModel;
 use App\Models\ReplyCommentModel;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Crypt;
+
 
 class UserController extends Controller
 {
@@ -27,7 +30,12 @@ class UserController extends Controller
         // Proses autentikasi
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
-        return redirect()->intended('/home');
+        if (auth()->user()->roles == 'guest') {
+            return redirect('/user/notice');
+        } else {
+            return redirect()->intended('/home');
+        }
+        
         } else {
         return redirect()->back()->with('error', 'Login gagal. Periksa email atau password yang dimasukkan.');
         }
@@ -61,6 +69,23 @@ class UserController extends Controller
       $request->session()->regenerateToken();
 
       return redirect('/login')->with('success', 'Anda telah berhasil logout.');
+    }
+
+    public function verifyAccount(Request $request) {
+        $encryptedVerify = $request->query('verify');
+        $decryptedVerify = md5(auth()->user()->id);
+        $credentials = [
+            'status' => 'Aktif',
+            'roles' => 'user',
+            'email_verified_at' => Carbon::now(),
+        ];
+        if ($encryptedVerify === $decryptedVerify) {
+            User::where('id', auth()->user()->id)->update($credentials);
+            return redirect('/user/verifysuccess')->with('success', 'Akun Anda berhasil diverifikasi, sekarang role anda adalah User.');
+        } else {
+            return redirect('/user/notice')->with('error', 'Gagal memverifikasi Akun.');
+        }
+        
     }
 
     public function changeUserRole(Request $request, $userId) {
@@ -160,16 +185,16 @@ class UserController extends Controller
         'name' => 'required|string|max:255',
         'user_image' => 'image|file|max:1024',
         'old_user_image' => 'required',
-        'no_telp' => 'required',
-        'jenis_kelamin' => 'required',
-        'alamat' => 'required',
+        // 'no_telp' => 'required',
+        // 'jenis_kelamin' => 'required',
+        // 'alamat' => 'required',
         ], [
         'name.required' => 'Mohon isi nama.',
         'user_image.max' => 'Mohon masukkan ukuran gambar dibawah 1mb.',
         'old_user_image.required' => 'Gambar tidak terdaftar.',
-        'no_telp.required' => 'Mohon isi nomor telepon.',
-        'jenis_kelamin.required' => 'Mohon isi jenis_kelamin.',
-        'alamat.required' => 'Mohon isi alamat.',
+        // 'no_telp.required' => 'Mohon isi nomor telepon.',
+        // 'jenis_kelamin.required' => 'Mohon isi jenis_kelamin.',
+        // 'alamat.required' => 'Mohon isi alamat.',
         ]);
 
         $credentials = [
@@ -190,7 +215,7 @@ class UserController extends Controller
         User::where('id', $userId)->update($credentials);
 
         // Redirect ke halaman setelah registrasi berhasil
-        return redirect('user/profile')->with('success', 'Berhasil Mengedit Profile.');
+        return redirect('/user/profile')->with('success', 'Berhasil Mengedit Profile.');
     }
     
     public function deleteProduct(Request $request, $productId) {

@@ -16,7 +16,8 @@
     <div class="w-full h-screen bg-[#deeceb] p-20 fs-poppins grid grid-cols-2 gap-6" id="product{{ $product->id }}">
         <div class="w-full h-full flex justify-center items-center">
             <div class="w-96 h-96">
-                <img src="{{ asset('storage/' . $product->product_image) }}" alt="" class="w-full h-full">
+                <img src="{{ asset('storage/' . $product->product_image) }}" alt=""
+                    class="w-full h-full object-cover">
             </div>
         </div>
         <div class="w-full h-full flex items-center">
@@ -44,9 +45,13 @@
                         <p class="text-sm italic text-red-500">*Anda Harus Memiliki role User untuk Checkout</p>
                     @endif
                     @if (auth()->user()->roles === 'admin')
-                        <a href="/product/listproduct#{{$product->id}}" class="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 mt-2 duration-100">Edit Produk</a>
+                        <a href="/product/listproduct#{{ $product->id }}"
+                            class="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 mt-2 duration-100">Edit
+                            Produk</a>
 
-                        <a href="/product/listproduct#{{$product->id}}" class="block text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline">Hapus Produk</a>
+                        <a href="/product/listproduct#{{ $product->id }}"
+                            class="block text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline">Hapus
+                            Produk</a>
                     @endif
                 </div>
                 <div class="likes">
