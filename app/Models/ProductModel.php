@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ProductLikeModel;
+use App\Models\TransactionModel;
 
 class ProductModel extends Model
 {
@@ -13,6 +14,11 @@ class ProductModel extends Model
     public function likes() {
         return $this->hasMany(ProductLikeModel::class, 'productId');
     }
+
+    public function sold() {
+        return $this->hasMany(TransactionModel::class, 'product_id');
+    }
+
     protected $table = 'product';
 
     protected $fillable = [

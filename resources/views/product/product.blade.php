@@ -85,7 +85,7 @@
         </div>
     </div>
     <div class="w-full fs-poppins p-20 flex flex-col" id="comments">
-        <p class="text-3xl fs-outfit">Komentar ({{ $totalComments }})</p>
+        <p class="text-3xl fs-outfit">Komentar ({{ $totalComments + $totalReplyComment }})</p>
         @if (auth()->user()->roles === 'admin' || auth()->user()->roles === 'user')
             <form action="/{{ $product->id }}/comment" method="post" id="commentForm">
                 @csrf

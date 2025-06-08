@@ -28,25 +28,25 @@
         </div>
     </div>
     <div class="w-full flex flex-row justify-center items-center gap-6 p-20 fs-poppins">
-        <div class="w-full flex flex-col gap-2">
+        <div class="w-full flex flex-col gap-2" data-aos="fade-up" data-aos-duration="600">
             <i class="bi bi-truck text-7xl text-[#6d9fa3]"></i>
             <p class="text-xl font-bold">Gratis Ongkir</p>
             <p class="text-base text-gray-500">Selalu tersedia gratis Ongkir untuk Setiap Pesananmu!
                 Nikmati Pengiriman Gratis, Belanja Lebih Untung, Hemat Lebih Banyak!</p>
         </div>
-        <div class="w-full flex flex-col gap-2">
+        <div class="w-full flex flex-col gap-2" data-aos="fade-down" data-aos-duration="600">
             <i class="bi bi-credit-card text-7xl text-[#6d9fa3]"></i>
             <p class="text-xl font-bold">Pembayaran Aman</p>
             <p class="text-base text-gray-500">Langkah Teguh dengan Pembayaran Aman! Transaksi Tanpa Batas Khawatir,
                 Kepercayaan Terjaga Tiap Saat!</p>
         </div>
-        <div class="w-full flex flex-col gap-2">
+        <div class="w-full flex flex-col gap-2" data-aos="fade-up" data-aos-duration="600">
             <i class="bi bi-clock text-7xl text-[#6d9fa3]"></i>
             <p class="text-xl font-bold">Pelayanan Cepat</p>
             <p class="text-base text-gray-500">Pelayanan Kami Siap Memberikan Respons Cepat dan Tanggap, Memberikan
                 Pengalaman Terbaik untuk Setiap Kebutuhan Anda!</p>
         </div>
-        <div class="w-full flex flex-col gap-2">
+        <div class="w-full flex flex-col gap-2" data-aos="fade-down" data-aos-duration="600">
             <i class="bi bi-fingerprint text-7xl text-[#6d9fa3]"></i>
             <p class="text-xl font-bold">Barang Original</p>
             <p class="text-base text-gray-500">Jaminan Keaslian Terpercaya! Pilih Hanya Barang Original untuk Kualitas
@@ -131,15 +131,41 @@
         <div class="grid grid-cols-5 gap-6">
             @foreach ($produkjaket as $jaket)
                 @if ($jaket->stock > 0)
-                    <div class="w-full border border-gray-400 rounded">
-                        <div class="h-52 overflow-y-hidden mb-3 bg-[#deeceb]">
+                    <div class="w-full rounded" data-aos="{{ $loop->iteration % 2 == 0 ? 'fade-down' : 'fade-up' }}"
+                        data-aos-duration="1000">
+                        <div
+                            class="relative h-72 overflow-y-hidden mb-3 bg-[#deeceb] flex justify-center items-center">
                             <img src="storage/{{ $jaket->product_image }}" alt="">
+                            <div class="absolute top-2 left-2 text-sm bg-green-800 text-white px-2 py-0.5">
+                                TOP
+                            </div>
+                            <div class="absolute top-2 right-2 text-sm bg-red-600 text-white p-2 py-0.5">
+                                SALE
+                            </div>
                         </div>
                         <div class="px-2 pb-2">
+                            <p class="text-sm text-gray-500">
+                                @if ($jaket->sold->count() >= 1)
+                                    <i class="bi bi-star-fill text-yellow-300"></i>
+                                    <i class="bi bi-star-fill text-yellow-300"></i>
+                                    <i class="bi bi-star-fill text-yellow-300"></i>
+                                    <i class="bi bi-star-fill text-yellow-300"></i>
+                                    <i class="bi bi-star-fill text-yellow-300 me-2"></i>
+                                @else
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star me-2"></i>
+                                @endif
+                                {{ $jaket->sold->count() }} Terjual
+                            </p>
                             <a href="/product/{{ $jaket->id }}"
-                                class="text-gray-700 uppercase fs-outfit">{{ $jaket->product_name }}</a>
+                                class="font-bold capitalize">{{ $jaket->product_name }}</a>
                             <p class="text-sm text-gray-500">Stock: {{ $jaket->stock }}</p>
-                            <p class="text-base font-bold">Rp{{ $jaket->harga }}</p>
+                            <p class="text-base font-bold text-green-800">Rp{{ $jaket->harga }}
+                                <del class="ms-2 text-gray-500">Rp{{ $jaket->harga * 2 + 1 }}</del>
+                            </p>
                         </div>
                     </div>
                 @endif
@@ -150,15 +176,41 @@
         <div class="grid grid-cols-5 gap-6">
             @foreach ($produksepatu as $sepatu)
                 @if ($sepatu->stock > 0)
-                    <div class="w-full border border-gray-400 rounded">
-                        <div class="h-52 overflow-y-hidden mb-3 bg-[#deeceb]">
+                    <div class="w-full rounded" data-aos="{{ $loop->iteration % 2 == 0 ? 'fade-down' : 'fade-up' }}"
+                        data-aos-duration="1000">
+                        <div
+                            class="relative h-72 overflow-y-hidden mb-3 bg-[#deeceb] flex justify-center items-center">
                             <img src="storage/{{ $sepatu->product_image }}" alt="">
+                            <div class="absolute top-2 left-2 text-sm bg-green-800 text-white px-2 py-0.5">
+                                TOP
+                            </div>
+                            <div class="absolute top-2 right-2 text-sm bg-red-600 text-white p-2 py-0.5">
+                                SALE
+                            </div>
                         </div>
                         <div class="px-2 pb-2">
+                            <p class="text-sm text-gray-500">
+                                @if ($sepatu->sold->count() >= 1)
+                                    <i class="bi bi-star-fill text-yellow-300"></i>
+                                    <i class="bi bi-star-fill text-yellow-300"></i>
+                                    <i class="bi bi-star-fill text-yellow-300"></i>
+                                    <i class="bi bi-star-fill text-yellow-300"></i>
+                                    <i class="bi bi-star-fill text-yellow-300 me-2"></i>
+                                @else
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star me-2"></i>
+                                @endif
+                                {{ $sepatu->sold->count() }} Terjual
+                            </p>
                             <a href="/product/{{ $sepatu->id }}"
-                                class="text-gray-700 uppercase fs-outfit">{{ $sepatu->product_name }}</a>
+                                class="font-bold capitalize">{{ $sepatu->product_name }}</a>
                             <p class="text-sm text-gray-500">Stock: {{ $sepatu->stock }}</p>
-                            <p class="text-base font-bold">Rp{{ $sepatu->harga }}</p>
+                            <p class="text-base font-bold text-green-800">Rp{{ $sepatu->harga }}
+                                <del class="ms-2 text-gray-500">Rp{{ $sepatu->harga * 2 + 1 }}</del>
+                            </p>
                         </div>
                     </div>
                 @endif
@@ -169,15 +221,41 @@
         <div class="grid grid-cols-5 gap-6">
             @foreach ($produktopi as $topi)
                 @if ($topi->stock > 0)
-                    <div class="w-full border border-gray-400 rounded">
-                        <div class="h-52 overflow-y-hidden mb-3 bg-[#deeceb]">
+                    <div class="w-full rounded" data-aos="{{ $loop->iteration % 2 == 0 ? 'fade-down' : 'fade-up' }}"
+                        data-aos-duration="1000">
+                        <div
+                            class="relative h-72 overflow-y-hidden mb-3 bg-[#deeceb] flex justify-center items-center">
                             <img src="storage/{{ $topi->product_image }}" alt="">
+                            <div class="absolute top-2 left-2 text-sm bg-green-800 text-white px-2 py-0.5">
+                                TOP
+                            </div>
+                            <div class="absolute top-2 right-2 text-sm bg-red-600 text-white p-2 py-0.5">
+                                SALE
+                            </div>
                         </div>
                         <div class="px-2 pb-2">
+                            <p class="text-sm text-gray-500">
+                                @if ($topi->sold->count() >= 1)
+                                    <i class="bi bi-star-fill text-yellow-300"></i>
+                                    <i class="bi bi-star-fill text-yellow-300"></i>
+                                    <i class="bi bi-star-fill text-yellow-300"></i>
+                                    <i class="bi bi-star-fill text-yellow-300"></i>
+                                    <i class="bi bi-star-fill text-yellow-300 me-2"></i>
+                                @else
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star me-2"></i>
+                                @endif
+                                {{ $topi->sold->count() }} Terjual
+                            </p>
                             <a href="/product/{{ $topi->id }}"
-                                class="text-gray-700 uppercase fs-outfit">{{ $topi->product_name }}</a>
+                                class="font-bold capitalize">{{ $topi->product_name }}</a>
                             <p class="text-sm text-gray-500">Stock: {{ $topi->stock }}</p>
-                            <p class="text-base font-bold">Rp{{ $topi->harga }}</p>
+                            <p class="text-base font-bold text-green-800">Rp{{ $topi->harga }}
+                                <del class="ms-2 text-gray-500">Rp{{ $topi->harga * 2 + 1 }}</del>
+                            </p>
                         </div>
                     </div>
                 @endif
@@ -188,15 +266,41 @@
         <div class="grid grid-cols-5 gap-6">
             @foreach ($produkaksesoris as $aksesoris)
                 @if ($aksesoris->stock > 0)
-                    <div class="w-full border border-gray-400 rounded">
-                        <div class="h-52 overflow-y-hidden mb-3 bg-[#deeceb]">
+                    <div class="w-full rounded" data-aos="{{ $loop->iteration % 2 == 0 ? 'fade-down' : 'fade-up' }}"
+                        data-aos-duration="1000">
+                        <div
+                            class="relative h-72 overflow-y-hidden mb-3 bg-[#deeceb] flex justify-center items-center">
                             <img src="storage/{{ $aksesoris->product_image }}" alt="">
+                            <div class="absolute top-2 left-2 text-sm bg-green-800 text-white px-2 py-0.5">
+                                TOP
+                            </div>
+                            <div class="absolute top-2 right-2 text-sm bg-red-600 text-white p-2 py-0.5">
+                                SALE
+                            </div>
                         </div>
                         <div class="px-2 pb-2">
+                            <p class="text-sm text-gray-500">
+                                @if ($aksesoris->sold->count() >= 1)
+                                    <i class="bi bi-star-fill text-yellow-300"></i>
+                                    <i class="bi bi-star-fill text-yellow-300"></i>
+                                    <i class="bi bi-star-fill text-yellow-300"></i>
+                                    <i class="bi bi-star-fill text-yellow-300"></i>
+                                    <i class="bi bi-star-fill text-yellow-300 me-2"></i>
+                                @else
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star me-2"></i>
+                                @endif
+                                {{ $aksesoris->sold->count() }} Terjual
+                            </p>
                             <a href="/product/{{ $aksesoris->id }}"
-                                class="text-gray-700 uppercase fs-outfit">{{ $aksesoris->product_name }}</a>
+                                class="font-bold capitalize">{{ $aksesoris->product_name }}</a>
                             <p class="text-sm text-gray-500">Stock: {{ $aksesoris->stock }}</p>
-                            <p class="text-base font-bold">Rp{{ $aksesoris->harga }}</p>
+                            <p class="text-base font-bold text-green-800">Rp{{ $aksesoris->harga }}
+                                <del class="ms-2 text-gray-500">Rp{{ $aksesoris->harga * 2 + 1 }}</del>
+                            </p>
                         </div>
                     </div>
                 @endif
@@ -205,7 +309,8 @@
     </div>
     <div class="w-full px-20 fs-poppins">
         <div class="flex flex-row gap-6">
-            <div class="women-new-collection w-full bg-[#e9e5f1] py-16 px-8 flex flex-col justify-center gap-1">
+            <div class="women-new-collection w-full bg-[#e9e5f1] py-16 px-8 flex flex-col justify-center gap-1"
+                data-aos="fade-right" data-aos-duration="800">
                 <p class="text-base text-[#6d9fa3]">
                     Newest Collection
                 </p>
@@ -213,7 +318,8 @@
                 <a href="" class="underline text-blue-500 hover:text-blue-600 duration-100">Shop Now</a>
             </div>
 
-            <div class="men-trendy-fashion w-full bg-[#f6ebd8] py-16 px-8 flex flex-col justify-center gap-1">
+            <div class="men-trendy-fashion w-full bg-[#f6ebd8] py-16 px-8 flex flex-col justify-center gap-1"
+                data-aos="fade-left" data-aos-duration="800">
                 <p class="text-base text-[#6d9fa3]">
                     Newest Collection
                 </p>
@@ -227,7 +333,7 @@
         <p class="text-3xl fs-outfit">Belanja menurut Kategori</p>
         <p class="text-base text-gray-700">List Kategori Produk</p>
         <div class="grid grid-cols-4 gap-4 mt-6">
-            <div class="flex w-full flex-col items-center gap-1">
+            <div class="flex w-full flex-col items-center gap-1" data-aos="fade-right" data-aos-duration="800">
                 <div class="h-44 bg-[#e9e5f1] w-full">
                     <img src="storage/{{ $produksepatu[0]->product_image }}" alt=""
                         class="w-full h-full object-cover">
@@ -239,7 +345,7 @@
                     Sepatu Sevenapprlco.
                 </p>
             </div>
-            <div class="flex w-full flex-col items-center gap-1">
+            <div class="flex w-full flex-col items-center gap-1" data-aos="fade-down" data-aos-duration="800">
                 <div class="h-44 bg-[#e9e5f1] w-full">
                     <img src="storage/{{ $produkjaket[0]->product_image }}" alt=""
                         class="w-full h-full object-cover">
@@ -252,7 +358,7 @@
                     Jaket Sevenapprlco.
                 </p>
             </div>
-            <div class="flex w-full flex-col items-center gap-1">
+            <div class="flex w-full flex-col items-center gap-1" data-aos="fade-up" data-aos-duration="800">
                 <div class="h-44 bg-[#e9e5f1] w-full">
                     <img src="storage/{{ $produktopi[0]->product_image }}" alt=""
                         class="w-full h-full object-cover">
@@ -264,7 +370,7 @@
                     Sepatu Sevenapprlco.
                 </p>
             </div>
-            <div class="flex w-full flex-col items-center gap-1">
+            <div class="flex w-full flex-col items-center gap-1" data-aos="fade-left" data-aos-duration="800">
                 <div class="h-44 bg-[#e9e5f1] w-full">
                     <img src="storage/{{ $produkaksesoris[0]->product_image }}" alt=""
                         class="w-full h-full object-cover">
@@ -292,7 +398,8 @@
             </a>
         </div>
         @foreach ($kritik as $item)
-            <div class="bg-white flex flex-col p-6 gap-4 z-10">
+            <div class="bg-white flex flex-col p-6 gap-4 z-10"
+                data-aos="{{ $loop->first ? 'flip-left' : 'flip-right' }}" data-aos-duration="1000">
                 <i class="bi bi-quote text-4xl text-[#6d9fa3]"></i>
                 <p class="text-base text-gray-700"><span class="font-bold">Kritik:</span> {{ $item->kritik }}</p>
                 <p class="text-base text-gray-700"><span class="font-bold">Saran:</span> {{ $item->saran }}</p>

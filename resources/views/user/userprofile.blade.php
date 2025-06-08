@@ -1,3 +1,9 @@
+<?php
+
+// Enkripsi parameter 'verify'
+$encryptedVerify = md5(auth()->user()->id);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -128,6 +134,22 @@
                 <span class="text-gray-600">{{ auth()->user()->roles }}</span>
             </div>
             <hr>
+            @if (auth()->user()->roles === 'guest')
+                <div class="grid grid-cols-1">
+                    <p class="flex text-base gap-x-20">
+                    <form action="/user/verifyemail" method="post" class="inline">
+                        @csrf
+                        <input type="hidden" name="emailRecipient" value="{{ auth()->user()->email }}">
+                        <input type="hidden" name="emailSubject" value="Verifikasi Akun SevenApparel">
+                        <input type="hidden" name="emailBody"
+                            value='Hi! {{ auth()->user()->name }}, Terimakasih Telah mendaftar di Seven Apparel! <br>Mohon Verifikasi Akun anda.</br> <a href="http://localhost:8000/user/verifyaccount?verify={{ urlencode($encryptedVerify) }}" style="padding: 16px; display: block; background-color: blue; color:white;">Verifikasi akun</a>'>
+                        <p class="text-base">Klik <button type="submit"
+                                class="text-blue-500 hover:text-blue-600 underline">disini</button>
+                            untuk melakukan verifikasi akun.</p>
+                    </form>
+                    </p>
+                </div>
+            @endif
         </div>
     </div>
     <div class="w-full bg-[#deeceb] px-16 fs-poppins">

@@ -80,8 +80,9 @@ class PageController extends Controller
         $productLikes = ProductLikeModel::where('productId', $productId)->get();
         $total_likes = $productLikes->count();
         $replyComment = ReplyCommentModel::where('product_id', $productId)->orderBy('created_at', 'asc')->get();
+        $totalReplyComment = $replyComment->count();
         
-        return view('product.product', compact('product', 'comments', 'totalComments', 'productLikes', 'total_likes', 'replyComment'));
+        return view('product.product', compact('product', 'comments', 'totalComments', 'productLikes', 'total_likes', 'replyComment', 'totalReplyComment'));
     }
 
     public function kritik(){
